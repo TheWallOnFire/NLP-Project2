@@ -1,0 +1,3 @@
+text,label
+"This is a sample training example.","positive"
+"Another example for training.","negative"

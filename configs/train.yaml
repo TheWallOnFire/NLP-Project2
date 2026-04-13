@@ -1,0 +1,14 @@
+# Training Configuration
+model:
+  type: "bert-base-uncased"
+  epochs: 10
+  batch_size: 32
+  learning_rate: 2e-5
+
+data:
+  train_path: "sample_data/train.csv"
+  val_split: 0.1
+
+output:
+  checkpoints_dir: "checkpoints/"
+  logs_dir: "logs/"

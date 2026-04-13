@@ -1,0 +1,9 @@
+# Inference Configuration
+model:
+  checkpoint_path: "checkpoints/best_model.pt"
+
+data:
+  test_path: "sample_data/test.csv"
+
+output:
+  results_path: "results/predictions.txt"

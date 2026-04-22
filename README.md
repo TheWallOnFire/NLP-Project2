@@ -1,91 +1,78 @@
-# NLP-Project2
+# 🏦 Banking Intent Detection with Unsloth
 
-This project is a template for NLP model training and inference.
+This project implements a high-performance intent detection model for the banking domain using the **BANKING77** dataset and **Unsloth**.
 
-## 1. Setup Environment
+## 🚀 Quick Start
 
-It is recommended to use a virtual environment to manage dependencies.
+To get the project running quickly:
 
-### Using `venv`
 ```bash
-# Create a virtual environment
-python -m venv venv
-
-# Activate the virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
+# 1. Install dependencies
 pip install -r requirements.txt
-```
 
-## 2. Download Data
-
-Place your training and testing data in the `sample_data/` directory. 
-- `train.csv`: Training dataset.
-- `test.csv`: Testing/Validation dataset.
-
-If you have external links to download datasets, update this section with the relevant `wget` or `curl` commands.
-
-## 3. Preprocess Data
-
-To preprocess your data before training, you can use the `scripts/preprocess_data.py` script:
-
-```bash
-python scripts/preprocess_data.py --input sample_data/train.csv --output sample_data/train_processed.csv
-```
-
-## 4. Train the Model
-
-You can train the model using the provided shell script or by running the training script directly.
-
-### Using Shell Script
-```bash
+# 2. Run the full training pipeline (Preprocessing + Training)
 bash train.sh
-```
 
-### Direct Command
-```bash
-python scripts/train.py --config configs/train.yaml
-```
-
-Configuration for training can be modified in `configs/train.yaml`.
-
-## 5. Run Inference
-
-To run inference on the test data:
-
-### Using Shell Script
-```bash
+# 3. Run inference on example messages
 bash inference.sh
 ```
 
-### Direct Command
-```bash
-python scripts/inference.py --config configs/inference.yaml
+## 📋 Assignment Details
+
+This project fulfills the requirements for the **NLP in Industry - Project 2**:
+- **Dataset**: [BANKING77](https://huggingface.co/datasets/PolyAI/banking77) (77 unique intents).
+- **Fine-tuning**: Used **Unsloth** with 4-bit quantization and LoRA (QLoRA) for efficient training.
+- **Approach**: Generative Intent Classification (the model is trained to generate the name of the intent).
+
+## 🛠️ Project Structure
+
+```text
+├── configs/
+│   ├── train.yaml          # Hyperparameters for training
+│   └── inference.yaml      # Settings for inference
+├── scripts/
+│   ├── preprocess_data.py  # Data sampling & label mapping
+│   ├── train.py           # Unsloth fine-tuning script
+│   └── inference.py        # IntentClassification class & CLI
+├── sample_data/
+│   ├── train.csv           # Sampled training data
+│   └── test.csv            # Sampled test data
+├── models/
+│   └── intent_model/       # Saved model checkpoint
+├── train.sh                # Automation script for training
+├── inference.sh            # Automation script for inference
+└── requirements.txt        # Project dependencies
 ```
 
-Inference settings can be adjusted in `configs/inference.yaml`.
+## ⚙️ Hyperparameters
 
-## Project Structure
+| Parameter | Value |
+|-----------|-------|
+| Base Model | `llama-3-8b-bnb-4bit` |
+| Learning Rate | `2e-4` |
+| Batch Size | `2` (per device) |
+| Gradient Acc. | `4` |
+| Max Steps | `60` |
+| Max Seq Length | `2048` |
+| Optimizer | `adamw_8bit` |
+
+## 🧪 Inference Implementation
+
+The core logic is housed in the `IntentClassification` class found in `scripts/inference.py`. It provides a clean interface for predicting intents from text queries.
+
+```python
+from scripts.inference import IntentClassification
+
+# Initialize classifier
+classifier = IntentClassification("configs/inference.yaml")
+
+# Predict intent
+intent = classifier("I can't access my account.")
+print(f"Predicted Intent: {intent}")
 ```
-|-- scripts/
-|   |-- train.py          # Training logic
-|   |-- inference.py      # Inference/Prediction logic
-|   |-- preprocess_data.py # Data cleaning and preparation
-|
-|-- configs/
-|   |-- train.yaml        # Training hyperparameters and paths
-|   |-- inference.yaml    # Inference settings
-|
-|-- sample_data/
-|   |-- train.csv         # Sample training data
-|   |-- test.csv          # Sample test data
-|
-|-- train.sh              # Bash script to trigger training
-|-- inference.sh          # Bash script to trigger inference
-|-- requirements.txt      # List of dependencies
-|-- README.md             # Project documentation
-```
+
+## 🎥 Video Demonstration
+[View the Demonstration Video](YOUR_VIDEO_LINK_HERE)
+
+---
+*Developed for the Applications of Natural Language Processing in Industry course.*

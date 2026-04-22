@@ -5,3 +5,11 @@ transformers
 pyyaml
 scikit-learn
 tqdm
+unsloth
+trl
+peft
+bitsandbytes
+xformers
+datasets
+accelerate
+huggingface_hub

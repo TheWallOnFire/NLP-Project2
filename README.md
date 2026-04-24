@@ -4,18 +4,15 @@ This project implements a high-performance intent detection model for the bankin
 
 ## 🚀 Quick Start
 
-To get the project running quickly:
+### For Windows Users
+1. **Install dependencies**: `pip install -r requirements.txt`
+2. **Train model**: Double-click `train.bat`
+3. **Run inference**: Double-click `inference.bat` (or run `inference.bat "message"` in CMD)
 
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Run the full training pipeline (Preprocessing + Training)
-bash train.sh
-
-# 3. Run inference on example messages
-bash inference.sh
-```
+### For Linux/macOS/WSL Users
+1. **Install dependencies**: `pip install -r requirements.txt`
+2. **Train model**: `bash train.sh`
+3. **Run inference**: `bash inference.sh`
 
 ## 📋 Assignment Details
 

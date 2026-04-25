@@ -28,19 +28,15 @@ pip install -r requirements.txt
 
 #### 2. Training the Model
 Use the provided automation scripts to preprocess data and start training:
-- **Windows**: Double-click `train.bat` or run `.\train.bat` in CMD/PowerShell.
-- **Linux/WSL**: Run `bash train.sh`.
+- **Execution**: `bash train.sh`
 
-#### 3. Running Inference
+#### 3. Running Evaluation
+To calculate the model's accuracy on the independent test set:
+- **Execution**: `python scripts/evaluate.py`
+
+#### 4. Running Inference
 Once the model is saved in `models/intent_model/`, you can test it:
-- **Example query**:
-  ```powershell
-  # Windows
-  .\inference.bat "I lost my credit card, what should I do?"
-  
-  # Linux/WSL
-  bash inference.sh "I lost my credit card, what should I do?"
-  ```
+- **Execution**: `bash inference.sh "I lost my credit card, what should I do?"`
 
 ---
 
@@ -64,12 +60,13 @@ Google Colab is the easiest way to run this project as it provides free access t
 ├── scripts/
 │   ├── preprocess_data.py  # Dataset sampling & prompt formatting
 │   ├── train.py            # Unsloth fine-tuning implementation
-│   └── inference.py        # IntentClassification class for predictions
+│   ├── inference.py        # IntentClassification class for predictions
+│   └── evaluate.py         # Accuracy & performance evaluation script
 ├── sample_data/            # Local directory for processed CSVs
 ├── models/
 │   └── intent_model/       # Destination for the fine-tuned LoRA weights
-├── train.bat / .sh         # One-click training scripts
-└── inference.bat / .sh     # One-click inference scripts
+├── train.sh                # Automated Training & Evaluation
+└── inference.sh            # Automated Inference script
 ```
 
 ---

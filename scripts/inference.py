@@ -8,16 +8,16 @@ class IntentClassification:
     """
     Standalone inference class for Banking Intent Detection.
     """
-    def __init__(self, config_path):
+    def __init__(self, model_path):
         """
         Initialize the inference class by loading the configuration and model.
         Args:
-            config_path (str): Path to the inference YAML configuration file.
+            model_path (str): Path to the inference YAML configuration file.
         """
-        if not os.path.exists(config_path):
-            raise FileNotFoundError(f"Config file not found: {config_path}")
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Config file not found: {model_path}")
 
-        with open(config_path, "r") as f:
+        with open(model_path, "r") as f:
             self.config = yaml.safe_load(f)
 
         if not torch.cuda.is_available():

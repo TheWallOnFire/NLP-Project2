@@ -54,17 +54,17 @@ def train():
 
     print("Starting training...")
     
-    # Version-agnostic trainer arguments
-    import inspect
-    from trl import SFTTrainer
-    trainer_kwargs = {
-        "model": model,
-        "train_dataset": dataset,
-        "dataset_text_field": "text",
-        "max_seq_length": config.get("max_seq_length", 2048),
-        "dataset_num_proc": 2,
-        "packing": False,
-        "args": TrainingArguments(
+    # Version-agnostic trainer initialization
+    print("Starting training...")
+    
+    trainer_args = dict(
+        model = model,
+        train_dataset = dataset,
+        dataset_text_field = "text",
+        max_seq_length = config.get("max_seq_length", 2048),
+        dataset_num_proc = 2,
+        packing = False,
+        args = TrainingArguments(
             per_device_train_batch_size = config.get("batch_size", 2),
             gradient_accumulation_steps = 4,
             warmup_steps = 5,
@@ -80,16 +80,20 @@ def train():
             output_dir = "outputs",
             save_strategy = "no",
         ),
-    }
-    
-    # Check if SFTTrainer uses 'processing_class' or 'tokenizer'
-    sig = inspect.signature(SFTTrainer.__init__)
-    if "processing_class" in sig.parameters:
-        trainer_kwargs["processing_class"] = tokenizer
-    else:
-        trainer_kwargs["tokenizer"] = tokenizer
+    )
 
-    trainer = SFTTrainer(**trainer_kwargs)
+    try:
+        # Try the modern 'processing_class' argument first (trl >= 0.11.0)
+        trainer = SFTTrainer(**trainer_args, processing_class = tokenizer)
+    except TypeError:
+        try:
+            # Fallback to the legacy 'tokenizer' argument (trl < 0.11.0)
+            trainer = SFTTrainer(**trainer_args, tokenizer = tokenizer)
+        except TypeError as e:
+            # Final fallback: If transformers >= 4.47 is causing issues, try passing processing_class via args
+            print(f"Warning: Standard initialization failed ({e}). Attempting fallback...")
+            trainer = SFTTrainer(**trainer_args)
+            trainer.tokenizer = tokenizer # Manually attach it
 
     trainer_stats = trainer.train()
     print(f"Training completed! Stats: {trainer_stats}")

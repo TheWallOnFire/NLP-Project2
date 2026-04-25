@@ -53,15 +53,18 @@ def train():
     dataset = dataset.map(formatting_prompts_func, batched = True)
 
     print("Starting training...")
-    trainer = SFTTrainer(
-        model = model,
-        processing_class = tokenizer,
-        train_dataset = dataset,
-        dataset_text_field = "text",
-        max_seq_length = config.get("max_seq_length", 2048),
-        dataset_num_proc = 2,
-        packing = False, # Can be True for faster training if seq_length is small
-        args = TrainingArguments(
+    
+    # Version-agnostic trainer arguments
+    import inspect
+    from trl import SFTTrainer
+    trainer_kwargs = {
+        "model": model,
+        "train_dataset": dataset,
+        "dataset_text_field": "text",
+        "max_seq_length": config.get("max_seq_length", 2048),
+        "dataset_num_proc": 2,
+        "packing": False,
+        "args": TrainingArguments(
             per_device_train_batch_size = config.get("batch_size", 2),
             gradient_accumulation_steps = 4,
             warmup_steps = 5,
@@ -75,9 +78,18 @@ def train():
             lr_scheduler_type = "linear",
             seed = 3407,
             output_dir = "outputs",
-            save_strategy = "no", # We save manually at the end
+            save_strategy = "no",
         ),
-    )
+    }
+    
+    # Check if SFTTrainer uses 'processing_class' or 'tokenizer'
+    sig = inspect.signature(SFTTrainer.__init__)
+    if "processing_class" in sig.parameters:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+
+    trainer = SFTTrainer(**trainer_kwargs)
 
     trainer_stats = trainer.train()
     print(f"Training completed! Stats: {trainer_stats}")

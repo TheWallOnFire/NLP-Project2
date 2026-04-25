@@ -20,6 +20,9 @@ class IntentClassification:
         with open(config_path, "r") as f:
             self.config = yaml.safe_load(f)
 
+        if not torch.cuda.is_available():
+            raise RuntimeError("CUDA is not available. Unsloth requires an NVIDIA GPU.")
+
         model_dir = self.config["model_path"]
         print(f"Loading model and tokenizer from {model_dir}...")
         

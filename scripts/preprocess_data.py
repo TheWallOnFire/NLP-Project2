@@ -24,7 +24,7 @@ BANKING77_INTENTS = [
     "lost_or_stolen_phone", "order_physical_card", "passcode_forgotten", 
     "pending_card_payment", "pending_cash_withdrawal", "pending_top_up", 
     "pending_transfer", "pin_blocked", "receiving_money", "refund_not_showing_up", 
-    "request_refund", "reverted_card_payment?", "supported_cards_and_currencies", 
+    "request_refund", "reverted_card_payment", "supported_cards_and_currencies", 
     "terminate_account", "top_up_by_bank_transfer_charge", "top_up_by_card_charge", 
     "top_up_by_cash_or_cheque", "top_up_failed", "top_up_limits", 
     "top_up_reverted", "topping_up_by_card", "transaction_charged_twice", 

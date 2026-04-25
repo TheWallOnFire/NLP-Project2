@@ -55,7 +55,7 @@ def train():
     print("Starting training...")
     trainer = SFTTrainer(
         model = model,
-        tokenizer = tokenizer,
+        processing_class = tokenizer,
         train_dataset = dataset,
         dataset_text_field = "text",
         max_seq_length = config.get("max_seq_length", 2048),
@@ -83,6 +83,7 @@ def train():
     print(f"Training completed! Stats: {trainer_stats}")
 
     print(f"Saving model and tokenizer to {config['output_dir']}...")
+    os.makedirs(config["output_dir"], exist_ok=True)
     model.save_pretrained(config["output_dir"])
     tokenizer.save_pretrained(config["output_dir"])
     print("Model saved successfully.")

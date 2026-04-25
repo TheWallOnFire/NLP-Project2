@@ -59,9 +59,10 @@ class IntentClassification:
         
         # Extract the label after the "Response:" part
         if "Response:" in result:
-            predicted_label = result.split("Response:")[-1].strip()
+            # Take only the part after the LAST "Response:" and then only the first non-empty line
+            predicted_label = result.split("Response:")[-1].strip().split('\n')[0].strip()
         else:
-            predicted_label = result.strip()
+            predicted_label = result.strip().split('\n')[0].strip()
             
         return predicted_label
 

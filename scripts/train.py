@@ -45,8 +45,8 @@ def train():
     def formatting_prompts_func(examples):
         texts = []
         for text, intent in zip(examples["text"], examples["intent"]):
-            # Prompt format consistent with inference
-            prompt = f"Instruction: Detect the banking intent of the following query.\nInput: {text}\nResponse: {intent}"
+            # Prompt format consistent with inference, adding EOS token for training
+            prompt = f"Instruction: Detect the banking intent of the following query.\nInput: {text}\nResponse: {intent}{tokenizer.eos_token}"
             texts.append(prompt)
         return { "text" : texts, }
 

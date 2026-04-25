@@ -1,79 +1,94 @@
 # 🏦 Banking Intent Detection with Unsloth
 
-This project implements a high-performance intent detection model for the banking domain using the **BANKING77** dataset and **Unsloth**.
+[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TheWallOnFire/NLP-Project2/blob/main/Banking_Intent_Detection_Colab.ipynb)
 
-## 🚀 Quick Start
+This project implements a high-performance intent detection system for the banking domain. By leveraging **Unsloth** and **Llama-3 (8B)**, we achieve fast, memory-efficient fine-tuning (QLoRA) on the **BANKING77** dataset.
 
-### For Windows Users
-1. **Install dependencies**: `pip install -r requirements.txt`
-2. **Train model**: Double-click `train.bat`
-3. **Run inference**: Double-click `inference.bat` (or run `inference.bat "message"` in CMD)
+The model is trained to act as a generative classifier, identifying 77 unique banking-related intents from customer queries.
 
-### For Google Colab Users
-1. Upload `Banking_Intent_Detection_Colab.ipynb` to [Google Colab](https://colab.research.google.com).
-2. Follow the instructions inside the notebook to clone the repo and run the training pipeline automatically.
+---
 
-### For Linux/macOS/WSL Users
-1. **Install dependencies**: `pip install -r requirements.txt`
-2. **Train model**: `bash train.sh`
-3. **Run inference**: `bash inference.sh`
+## 🚀 Quick Start Guide
 
-## 📋 Assignment Details
+### 💻 Running on local PC (Windows/Linux)
 
-This project fulfills the requirements for the **NLP in Industry - Project 2**:
-- **Dataset**: [BANKING77](https://huggingface.co/datasets/PolyAI/banking77) (77 unique intents).
-- **Fine-tuning**: Used **Unsloth** with 4-bit quantization and LoRA (QLoRA) for efficient training.
-- **Approach**: Generative Intent Classification (the model is trained to generate the name of the intent).
+#### 1. Environment Setup
+We recommend using a Python virtual environment:
+```powershell
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+
+# Linux/macOS/WSL
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+#### 2. Training the Model
+Use the provided automation scripts to preprocess data and start training:
+- **Windows**: Double-click `train.bat` or run `.\train.bat` in CMD/PowerShell.
+- **Linux/WSL**: Run `bash train.sh`.
+
+#### 3. Running Inference
+Once the model is saved in `models/intent_model/`, you can test it:
+- **Example query**:
+  ```powershell
+  # Windows
+  .\inference.bat "I lost my credit card, what should I do?"
+  
+  # Linux/WSL
+  bash inference.sh "I lost my credit card, what should I do?"
+  ```
+
+---
+
+### ☁️ Running on Google Colab (Recommended)
+
+Google Colab is the easiest way to run this project as it provides free access to T4 GPUs optimized for Unsloth.
+
+1.  Open [Google Colab](https://colab.research.google.com).
+2.  Upload the `Banking_Intent_Detection_Colab.ipynb` file from this repository.
+3.  Set your Runtime to **GPU** (`Runtime > Change runtime type > T4 GPU`).
+4.  Run the cells sequentially. The notebook will automatically clone the repository and handle all installations.
+
+---
 
 ## 🛠️ Project Structure
 
 ```text
 ├── configs/
-│   ├── train.yaml          # Hyperparameters for training
-│   └── inference.yaml      # Settings for inference
+│   ├── train.yaml          # Hyperparameters (LR, Batch Size, Steps)
+│   └── inference.yaml      # Model path and generation settings
 ├── scripts/
-│   ├── preprocess_data.py  # Data sampling & label mapping
-│   ├── train.py           # Unsloth fine-tuning script
-│   └── inference.py        # IntentClassification class & CLI
-├── sample_data/
-│   ├── train.csv           # Sampled training data
-│   └── test.csv            # Sampled test data
+│   ├── preprocess_data.py  # Dataset sampling & prompt formatting
+│   ├── train.py            # Unsloth fine-tuning implementation
+│   └── inference.py        # IntentClassification class for predictions
+├── sample_data/            # Local directory for processed CSVs
 ├── models/
-│   └── intent_model/       # Saved model checkpoint
-├── train.sh                # Automation script for training
-├── inference.sh            # Automation script for inference
-└── requirements.txt        # Project dependencies
+│   └── intent_model/       # Destination for the fine-tuned LoRA weights
+├── train.bat / .sh         # One-click training scripts
+└── inference.bat / .sh     # One-click inference scripts
 ```
-
-## ⚙️ Hyperparameters
-
-| Parameter | Value |
-|-----------|-------|
-| Base Model | `llama-3-8b-bnb-4bit` |
-| Learning Rate | `2e-4` |
-| Batch Size | `2` (per device) |
-| Gradient Acc. | `4` |
-| Max Steps | `60` |
-| Max Seq Length | `2048` |
-| Optimizer | `adamw_8bit` |
-
-## 🧪 Inference Implementation
-
-The core logic is housed in the `IntentClassification` class found in `scripts/inference.py`. It provides a clean interface for predicting intents from text queries.
-
-```python
-from scripts.inference import IntentClassification
-
-# Initialize classifier
-classifier = IntentClassification("configs/inference.yaml")
-
-# Predict intent
-intent = classifier("I can't access my account.")
-print(f"Predicted Intent: {intent}")
-```
-
-## 🎥 Video Demonstration
-[View the Demonstration Video](YOUR_VIDEO_LINK_HERE)
 
 ---
-*Developed for the Applications of Natural Language Processing in Industry course.*
+
+## 📊 Model & Training Details
+
+| Feature | Specification |
+| :--- | :--- |
+| **Base Model** | Meta Llama-3 8B (4-bit quantized) |
+| **Dataset** | PolyAI BANKING77 (77 Intents) |
+| **Fine-tuning** | QLoRA (Rank 16, Alpha 16) |
+| **Optimization** | AdamW 8-bit (Unsloth optimized) |
+| **Max Seq Length** | 2048 tokens |
+
+---
+
+## 🎥 Demonstration
+A full video walkthrough of the training and inference process can be found here:
+[**[Link to Video Demo]**](YOUR_VIDEO_LINK_HERE)
+
+---
+*Developed for the NLP in Industry Course - Project 2.*

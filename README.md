@@ -9,6 +9,10 @@ This project implements a high-performance intent detection model for the bankin
 2. **Train model**: Double-click `train.bat`
 3. **Run inference**: Double-click `inference.bat` (or run `inference.bat "message"` in CMD)
 
+### For Google Colab Users
+1. Upload `Banking_Intent_Detection_Colab.ipynb` to [Google Colab](https://colab.research.google.com).
+2. Follow the instructions inside the notebook to clone the repo and run the training pipeline automatically.
+
 ### For Linux/macOS/WSL Users
 1. **Install dependencies**: `pip install -r requirements.txt`
 2. **Train model**: `bash train.sh`

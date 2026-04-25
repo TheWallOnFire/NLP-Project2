@@ -27,14 +27,10 @@ pip install -r requirements.txt
 ```
 
 #### 2. Training the Model
-Use the provided automation scripts to preprocess data and start training:
+Use the provided automation scripts to preprocess data, start training, and automatically calculate final accuracy:
 - **Execution**: `bash train.sh`
 
-#### 3. Running Evaluation
-To calculate the model's accuracy on the independent test set:
-- **Execution**: `python scripts/evaluate.py`
-
-#### 4. Running Inference
+#### 3. Running Inference
 Once the model is saved in `models/intent_model/`, you can test it:
 - **Execution**: `bash inference.sh "I lost my credit card, what should I do?"`
 
@@ -59,9 +55,8 @@ Google Colab is the easiest way to run this project as it provides free access t
 │   └── inference.yaml      # Model path and generation settings
 ├── scripts/
 │   ├── preprocess_data.py  # Dataset sampling & prompt formatting
-│   ├── train.py            # Unsloth fine-tuning implementation
-│   ├── inference.py        # IntentClassification class for predictions
-│   └── evaluate.py         # Accuracy & performance evaluation script
+│   ├── train.py            # Unsloth fine-tuning & evaluation
+│   └── inference.py        # IntentClassification class for predictions
 ├── sample_data/            # Local directory for processed CSVs
 ├── models/
 │   └── intent_model/       # Destination for the fine-tuned LoRA weights

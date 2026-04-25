@@ -104,5 +104,36 @@ def train():
     tokenizer.save_pretrained(config["output_dir"])
     print("Model saved successfully.")
 
+    # --- Evaluation Step ---
+    test_data_path = "sample_data/test.csv"
+    if os.path.exists(test_data_path):
+        print(f"\nEvaluating on test set: {test_data_path}...")
+        import pandas as pd
+        from tqdm import tqdm
+        
+        test_df = pd.read_csv(test_data_path)
+        FastLanguageModel.for_inference(model) # Ensure inference mode
+        
+        correct = 0
+        total = len(test_df)
+        
+        for _, row in tqdm(test_df.iterrows(), total=total):
+            text = row["text"]
+            label = row["intent"]
+            
+            prompt = f"Instruction: Detect the banking intent of the following query.\nInput: {text}\nResponse: "
+            inputs = tokenizer([prompt], return_tensors="pt").to("cuda")
+            outputs = model.generate(**inputs, max_new_tokens=64, use_cache=True, pad_token_id=tokenizer.eos_token_id)
+            result = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+            
+            predicted = result.split("Response:")[-1].strip().split('\n')[0].strip()
+            if predicted.lower() == label.lower():
+                correct += 1
+                
+        accuracy = correct / total
+        print("\n" + "="*30)
+        print(f"FINAL TEST ACCURACY: {accuracy:.4f}")
+        print("="*30)
+
 if __name__ == "__main__":
     train()

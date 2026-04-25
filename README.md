@@ -80,7 +80,7 @@ Google Colab is the easiest way to run this project as it provides free access t
 
 ## 🎥 Demonstration
 A full video walkthrough of the training and inference process can be found here:
-[**[Link to Video Demo]**](YOUR_VIDEO_LINK_HERE)
+[**[Link to Video Demo]**]((https://drive.google.com/file/d/1HjkPxZSVysf7W95rKNWbKijGxjcnpKxm/view?usp=sharing))
 
 ---
 *Developed for the NLP in Industry Course - Project 2.*

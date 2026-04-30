@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+requests
+pydantic-settings
+python-dotenv
+# Additional libraries for Ex2 model if needed (usually torch, transformers, etc.)
+# These should already be in Ex2/requirements.txt

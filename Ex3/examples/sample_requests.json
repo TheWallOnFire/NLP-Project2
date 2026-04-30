@@ -1,0 +1,22 @@
+[
+    {
+        "query": "What is my account balance?",
+        "intent": "balance_inquiry",
+        "expected_priority": "low"
+    },
+    {
+        "query": "I lost my credit card at the mall, help!",
+        "intent": "card_lost",
+        "expected_priority": "high"
+    },
+    {
+        "query": "My transfer to John failed last night.",
+        "intent": "transfer_failure",
+        "expected_priority": "medium"
+    },
+    {
+        "query": "How do I unblock my account?",
+        "intent": "blocked_account",
+        "expected_priority": "medium"
+    }
+]

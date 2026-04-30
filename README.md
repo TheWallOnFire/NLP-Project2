@@ -11,7 +11,7 @@ The repository is organized into distinct exercises, each contained within its o
 | Directory | Topic | Status |
 | :--- | :--- | :--- |
 | [**Ex2/**](./Ex2) | **Banking Intent Detection** | ✅ Completed |
-| [**Ex3/**](./Ex3) | **Future NLP Task** | 🚧 In Progress |
+| [**Ex3/**](./Ex3) | **Banking AI-Agent** | ✅ Completed |
 
 ---
 

@@ -5,8 +5,12 @@ import time
 def test_workflow():
     url = "http://localhost:8000/process"
     
-    # Load sample requests
-    with open("examples/sample_requests.json", "r") as f:
+    # Load sample requests relative to script location
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    samples_path = os.path.join(script_dir, "../examples/sample_requests.json")
+    
+    with open(samples_path, "r") as f:
         samples = json.load(f)
         
     print(f"🚀 Starting test for {len(samples)} samples...\n")

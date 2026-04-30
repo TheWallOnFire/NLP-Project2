@@ -23,8 +23,11 @@ This exercise implements a high-performance intent detection system for the bank
 - **Dataset**: BANKING77 (77 unique intents).
 - **Tools**: Unsloth, HuggingFace, PyTorch.
 
-### 🧪 [Ex3: Upcoming Task](./Ex3)
-Details for Exercise 3 will be added as the project progresses.
+### 🤖 [Ex3: Banking AI-Agent](./Ex3)
+This exercise involves building an agentic workflow for banking customer support.
+- **Key Features**: Multi-node pipeline (Intent, Priority, Policy, Draft, Validation, Router), Orchestration, and LLM integration.
+- **Tools**: FastAPI, Ollama (gpt-oss-20b), Pydantic.
+- **Integration**: Reuses the fine-tuned intent detection model from Ex2.
 
 ---
 
@@ -50,4 +53,10 @@ Details for Exercise 3 will be added as the project progresses.
 Developed as part of the **NLP in Industry** course curriculum. This repository serves as a portfolio of advanced NLP implementations using state-of-the-art libraries and models.
 
 ---
-*Created by [TheWallOnFire](https://github.com/TheWallOnFire)*
+
+## 🎥 Demonstration
+A full video walkthrough of the training and inference process can be found here:
+https://drive.google.com/file/d/1HjkPxZSVysf7W95rKNWbKijGxjcnpKxm/view?usp=sharing
+
+---
+*Developed for the NLP in Industry Course - Project 2.*

@@ -8,11 +8,11 @@ This project implements an agentic workflow for banking customer support. It use
 
 The system follows a modular "Chain of Thought" or "Node-based" design:
 
-1.  **Intent Detection**: Identifies the user's goal using the fine-tuned model from **Lab 2**.
+1.  **Intent Detection**: Identifies the user's goal using the fine-tuned **Llama-3 8B** model from **Lab 2**.
 2.  **Priority Assessment**: Analyzes the urgency and risk level (Low/Medium/High).
 3.  **Policy Retrieval**: Fetches relevant information from the internal knowledge base (`policies.py`).
-4.  **Response Drafting**: Generates a tailored response using **Ollama** (`gpt-oss-20b`).
-5.  **Validation**: Verifies the drafted response for quality and accuracy.
+4.  **Response Drafting**: Generates a tailored response using **Ollama** (`gpt-oss-20b`), including missing info and next steps.
+5.  **Validation**: Verifies the drafted response for quality, completeness, and confidence.
 6.  **Routing**: Decides whether to send the response directly, ask for more info, or escalate to a human agent.
 
 ---
@@ -23,7 +23,7 @@ The system follows a modular "Chain of Thought" or "Node-based" design:
 - Python 3.10+
 - **Ollama** installed and running.
 - **gpt-oss-20b** model pulled (`ollama pull gpt-oss:20b`).
-- (Optional) **Pinggy** for public URL if running on Colab.
+- **Lab 2 Model**: Ensure your fine-tuned model is saved in `Ex2/models/intent_model/`.
 
 ### 2. Environment Setup
 ```bash

@@ -40,7 +40,8 @@ class AgentOrchestrator:
         # 5. Validation
         trace.validation = self.validation_node.process(
             trace.draft.draft_response,
-            trace.policy.policy_snippet
+            trace.draft.missing_information,
+            trace.intent.confidence
         )
         
         # 6. Routing Decision

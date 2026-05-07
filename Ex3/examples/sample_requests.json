@@ -18,5 +18,45 @@
         "query": "How do I unblock my account?",
         "intent": "blocked_account",
         "expected_priority": "medium"
+    },
+    {
+        "query": "I want to request a refund for an unauthorized charge.",
+        "intent": "refund_request",
+        "expected_priority": "high"
+    },
+    {
+        "query": "What are your loan interest rates?",
+        "intent": "loan_inquiry",
+        "expected_priority": "low"
+    },
+    {
+        "query": "Can you show me my recent transaction history?",
+        "intent": "transaction_history",
+        "expected_priority": "low"
+    },
+    {
+        "query": "How do I contact customer support?",
+        "intent": "general",
+        "expected_priority": "low"
+    },
+    {
+        "query": "My card was stolen and someone is using it!",
+        "intent": "card_lost",
+        "expected_priority": "high"
+    },
+    {
+        "query": "I need to check my balance before making a purchase.",
+        "intent": "balance_inquiry",
+        "expected_priority": "low"
+    },
+    {
+        "query": "The transfer I made yesterday hasn't arrived yet.",
+        "intent": "transfer_failure",
+        "expected_priority": "medium"
+    },
+    {
+        "query": "I forgot my PIN and my card is blocked.",
+        "intent": "blocked_account",
+        "expected_priority": "medium"
     }
 ]

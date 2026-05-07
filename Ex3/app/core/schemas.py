@@ -30,6 +30,8 @@ class PolicyResult(BaseModel):
 
 class DraftResult(BaseModel):
     draft_response: str
+    missing_information: List[str] = []
+    next_action: Optional[str] = None
 
 class ValidationResult(BaseModel):
     is_valid: bool

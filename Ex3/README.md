@@ -19,47 +19,78 @@ The system follows a modular "Chain of Thought" or "Node-based" design:
 
 ## 🚀 Getting Started
 
-### 1. Prerequisites
+There are three ways to run this project depending on your hardware capabilities.
+
+### 💻 Option 1: Fully Local (Requires strong hardware)
+Run both the FastAPI application and the Ollama model on your local machine.
+*(A step-by-step guide is also available in `docs/notebooks/Run_Project_Local.ipynb`)*
+
+**1. Prerequisites**
 - Python 3.10+
-- **Ollama** installed and running.
-- **gpt-oss-20b** model pulled (`ollama pull gpt-oss:20b`).
+- **Ollama** installed and running locally.
+- Pull the model: `ollama pull gpt-oss:20b`.
 - **Lab 2 Model**: Ensure your fine-tuned model is saved in `Ex2/models/intent_model/`.
 
-### 2. Environment Setup
+**2. Setup & Run**
 ```bash
 # Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # Or .\venv\Scripts\activate on Windows
+.\venv\Scripts\activate  # Windows (or source venv/bin/activate on Linux/Mac)
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-### 3. Configuration
-Copy the sample config or set environment variables:
-- `OLLAMA_BASE_URL`: Your Ollama server address (default: `http://localhost:11434`).
-- `INTENT_CONFIG_PATH`: Path to the Ex2 inference configuration.
-
-### 4. Running the Agent
-```bash
+# Run the Agent
 python run.py
 ```
 The API will be available at `http://localhost:8000`. You can access the interactive documentation at `http://localhost:8000/docs`.
 
-### ☁️ Running with Google Colab (Free GPU)
-If you don't have a strong enough machine to run Ollama locally, you can host the model on Google Colab and connect to it from your local FastAPI app.
+### ☁️ Option 2: Fully Google Colab (Free GPU, No local setup)
+Run both the API and Ollama directly on Google Colab.
+
+*(An automated notebook for this setup is available at `docs/notebooks/Run_Project_Colab.ipynb`. Just open it in Colab and follow the instructions!)*
+
+**Manual Steps:**
+1. Open a new Google Colab notebook and change the Runtime to **T4 GPU**.
+2. Clone this repository into the Colab environment and enter the directory:
+   ```bash
+   !git clone https://github.com/TheWallOnFire/NLP-Project2.git
+   %cd NLP-Project2/Ex3
+   ```
+3. Install the project dependencies:
+   ```bash
+   !pip install -r requirements.txt
+   ```
+4. Install and start Ollama in the background, then pull the model:
+   ```bash
+   !curl -fsSL https://ollama.com/install.sh | sh
+   !ollama serve &
+   !sleep 5 && ollama pull gpt-oss:20b
+   ```
+5. Use `localtunnel` or `ngrok` to expose the FastAPI port, then run the app:
+   ```bash
+   !npm install -g localtunnel
+   !python run.py &
+   !lt --port 8000
+   ```
+   *Access your API using the public URL provided by localtunnel.*
+
+### 🔗 Option 3: Hybrid (Colab for Ollama, Local for App)
+Host the heavy LLM on Google Colab, but run the FastAPI application locally.
 
 1. Open the `docs/notebooks/Ollama-Pinggy.ipynb` notebook in Google Colab.
 2. Change the Runtime type to **T4 GPU**.
-3. Run the first cell to install and start Ollama in the background.
-4. Run the second cell to pull the `gpt-oss:20b` model.
-5. Open a terminal in Colab (or create a new cell) and run the Pinggy command to create a public tunnel to your Ollama instance:
+3. Run the notebook cells to install Ollama and pull `gpt-oss:20b`.
+4. Run the Pinggy command in Colab to create a public tunnel for Ollama:
    ```bash
    ssh -p 443 -R0:localhost:11434 qr@a.pinggy.io
    ```
-6. Copy the public URL provided by Pinggy.
-7. On your local machine, update your `configs/default.yaml` or environment variables to set `OLLAMA_BASE_URL` to the Pinggy URL.
-8. Run `python run.py` locally!
+5. **Copy the public URL** provided by Pinggy.
+6. On your local machine, setup your environment (as shown in Option 1) but update `configs/default.yaml` (or set the environment variable) to point `OLLAMA_BASE_URL` to your Pinggy URL.
+7. Run the app locally:
+   ```bash
+   python run.py
+   ```
 
 ---
 

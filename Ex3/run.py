@@ -1,11 +1,25 @@
 import uvicorn
 import os
-import sys
+from pathlib import Path
 
-# Ensure the app and project root are in the path
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
-sys.path.append(os.path.join(project_root, "Ex3"))
+def main():
+    """Run the Banking AI-Agent server."""
+    # Get project root
+    project_root = Path(__file__).parent
+    
+    # Configuration
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "8000"))
+    reload = os.getenv("DEBUG", "false").lower() == "true"
+    
+    # Run server
+    uvicorn.run(
+        "app.main:app",
+        host=host,
+        port=port,
+        reload=reload,
+        log_level="info"
+    )
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    main()

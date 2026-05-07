@@ -1,14 +1,14 @@
 import json
 import requests
 import time
+from pathlib import Path
 
 def test_workflow():
     url = "http://localhost:8000/process"
     
-    # Load sample requests relative to script location
-    import os
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    samples_path = os.path.join(script_dir, "../examples/sample_requests.json")
+    # Get project root
+    project_root = Path(__file__).parent.parent
+    samples_path = project_root / "examples" / "sample_requests.json"
     
     with open(samples_path, "r") as f:
         samples = json.load(f)

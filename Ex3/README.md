@@ -63,3 +63,21 @@ curl -X POST "http://localhost:8000/process" \
 - **Course**: NLP in Industry
 - **Project**: 3 - Build a Banking AI-Agent
 - **Instructor**: Dr. Nguyen Hong Buu Long
+
+---
+
+## 🏗️ Project Structure & Documentation
+
+The project has been refactored to follow professional Python standards.
+
+- `app/`: Main application code (FastAPI, agent nodes, etc.)
+- `configs/`: Configuration YAML files.
+- `docs/`: Comprehensive documentation. See [setup.md](docs/setup.md), [api.md](docs/api.md), and [architecture.md](docs/architecture.md) for more details.
+- `tests/`: Unit and integration tests.
+
+### Running Tests
+
+To run the test suite, use pytest:
+```bash
+pytest
+```

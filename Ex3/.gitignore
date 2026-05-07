@@ -116,3 +116,36 @@ logs/
 *.pkl
 *.h5
 *.model
+
+# --- Added by Refactoring Plan ---
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+tests/results/
+
+# Documentation builds
+docs/_build/
+
+# Configuration
+configs/local.yaml
+configs/*.local.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/

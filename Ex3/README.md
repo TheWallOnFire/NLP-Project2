@@ -46,6 +46,21 @@ python run.py
 ```
 The API will be available at `http://localhost:8000`. You can access the interactive documentation at `http://localhost:8000/docs`.
 
+### ☁️ Running with Google Colab (Free GPU)
+If you don't have a strong enough machine to run Ollama locally, you can host the model on Google Colab and connect to it from your local FastAPI app.
+
+1. Open the `docs/notebooks/Ollama-Pinggy.ipynb` notebook in Google Colab.
+2. Change the Runtime type to **T4 GPU**.
+3. Run the first cell to install and start Ollama in the background.
+4. Run the second cell to pull the `gpt-oss:20b` model.
+5. Open a terminal in Colab (or create a new cell) and run the Pinggy command to create a public tunnel to your Ollama instance:
+   ```bash
+   ssh -p 443 -R0:localhost:11434 qr@a.pinggy.io
+   ```
+6. Copy the public URL provided by Pinggy.
+7. On your local machine, update your `configs/default.yaml` or environment variables to set `OLLAMA_BASE_URL` to the Pinggy URL.
+8. Run `python run.py` locally!
+
 ---
 
 ## 🧪 Testing

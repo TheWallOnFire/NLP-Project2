@@ -72,7 +72,7 @@ def main():
         start_prompt="Click to Speak",
         stop_prompt="Stop Recording",
         just_once=True,
-        use_recorder=True,
+        use_container_width=True,
         key='recorder'
     )
 

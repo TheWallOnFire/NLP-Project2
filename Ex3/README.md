@@ -2,6 +2,8 @@
 
 This project implements an agentic workflow for banking customer support. It uses a series of specialized nodes to process customer queries, assess risk, retrieve policies, and generate professional responses.
 
+The project includes both a **FastAPI backend** and a **Streamlit web frontend** with voice capabilities.
+
 ---
 
 ## 🤖 Workflow Architecture
@@ -40,15 +42,18 @@ python -m venv venv
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the Agent
+# Run the Backend
 python run.py
+
+# Run the Frontend (in a new terminal)
+streamlit run frontend/app.py
 ```
-The API will be available at `http://localhost:8000`. You can access the interactive documentation at `http://localhost:8000/docs`.
+The API will be available at `http://localhost:8000` and the web interface at `http://localhost:8501`.
 
 ### ☁️ Option 2: Fully Google Colab (Free GPU, No local setup)
-Run both the API and Ollama directly on Google Colab.
+Run the entire system—Ollama, the FastAPI Backend, and the **Streamlit Frontend**—directly on Google Colab.
 
-*(An automated notebook for this setup is available at `docs/notebooks/Run_Project_Colab.ipynb`. Just open it in Colab and follow the instructions!)*
+*(An automated notebook for this setup is available as `Run_App_Colab.ipynb` in the root directory. Just open it in Colab and follow the instructions!)*
 
 **Manual Steps:**
 1. Open a new Google Colab notebook and change the Runtime to **T4 GPU**.

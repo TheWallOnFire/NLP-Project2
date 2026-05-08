@@ -68,6 +68,7 @@ Run the entire system—Ollama, the FastAPI Backend, and the **Streamlit Fronten
    ```
 4. Install and start Ollama in the background, then pull the model:
    ```bash
+   !apt-get update -qq && apt-get install -y zstd
    !curl -fsSL https://ollama.com/install.sh | sh
    !ollama serve &
    !sleep 5 && ollama pull gpt-oss:20b

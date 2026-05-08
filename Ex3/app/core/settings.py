@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     
     # Intent Model Configuration (from Lab 2)
     INTENT_MODEL_PATH: str = os.getenv("INTENT_MODEL_PATH", "../../Ex2/models/intent_model/")
-    INTENT_CONFIG_PATH: str = os.getenv("INTENT_CONFIG_PATH", "../../Ex2/configs/inference.yaml")
+    INTENT_CONFIG_PATH: str = os.getenv("INTENT_CONFIG_PATH", "app/core/inference.yaml")
     
     # Workflow Settings
     VALIDATION_ENABLED: bool = True

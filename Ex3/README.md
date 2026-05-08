@@ -25,78 +25,42 @@ There are three ways to run this project depending on your hardware capabilities
 
 ### 💻 Option 1: Fully Local (Requires strong hardware)
 Run both the FastAPI application and the Ollama model on your local machine.
-*(A step-by-step guide is also available in `docs/notebooks/Run_Project_Local.ipynb`)*
 
 **1. Prerequisites**
 - Python 3.10+
 - **Ollama** installed and running locally.
 - Pull the model: `ollama pull gpt-oss:20b`.
-- **Lab 2 Model**: Ensure your fine-tuned model is saved in `Ex2/models/intent_model/`.
+- **Model Weights**: Copy your `models/intent_model/` from Project 2 into the `Ex3/models/` directory.
 
 **2. Setup & Run**
 ```bash
 # Create and activate virtual environment
 python -m venv venv
-.\venv\Scripts\activate  # Windows (or source venv/bin/activate on Linux/Mac)
+.\venv\Scripts\activate  # Windows
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the Backend
+# Run the Application
 python run.py
-
-# Run the Frontend (in a new terminal)
-streamlit run frontend/app.py
 ```
-The API will be available at `http://localhost:8000` and the web interface at `http://localhost:8501`.
 
-### ☁️ Option 2: Fully Google Colab (Free GPU, No local setup)
-Run the entire system—Ollama, the FastAPI Backend, and the **Streamlit Frontend**—directly on Google Colab.
+### ☁️ Option 2: Google Colab (Recommended)
+Run the entire system directly on Google Colab using our automated notebook.
 
-*(An automated notebook for this setup is available as `Run_App_Colab.ipynb` in the root directory. Just open it in Colab and follow the instructions!)*
+1. Open **`Run_App_Colab.ipynb`** in Google Colab.
+2. Change the Runtime to **T4 GPU**.
+3. Run all cells. 
+4. **Cloudflare Tunnel**: The notebook now uses `cloudflared` for superior stability. It will provide you with a clean `.trycloudflare.com` URL for the Web Frontend.
 
-**Manual Steps:**
-1. Open a new Google Colab notebook and change the Runtime to **T4 GPU**.
-2. Clone this repository into the Colab environment and enter the directory:
-   ```bash
-   !git clone https://github.com/TheWallOnFire/NLP-Project2.git
-   %cd NLP-Project2/Ex3
-   ```
-3. Install the project dependencies:
-   ```bash
-   !pip install -r requirements.txt
-   ```
-4. Install and start Ollama in the background, then pull the model:
-   ```bash
-   !apt-get update -qq && apt-get install -y zstd
-   !curl -fsSL https://ollama.com/install.sh | sh
-   !ollama serve &
-   !sleep 5 && ollama pull gpt-oss:20b
-   ```
-5. Use `localtunnel` or `ngrok` to expose the FastAPI port, then run the app:
-   ```bash
-   !npm install -g localtunnel
-   !python run.py &
-   !lt --port 8000
-   ```
-   *Access your API using the public URL provided by localtunnel.*
+---
 
-### 🔗 Option 3: Hybrid (Colab for Ollama, Local for App)
-Host the heavy LLM on Google Colab, but run the FastAPI application locally.
+## 🏗️ Standalone Architecture
+The project has been updated to be fully standalone. The **Intent Detection** logic from Project 2 has been migrated into `app/utils/intent_classifier.py`.
 
-1. Open the `docs/notebooks/Ollama-Pinggy.ipynb` notebook in Google Colab.
-2. Change the Runtime type to **T4 GPU**.
-3. Run the notebook cells to install Ollama and pull `gpt-oss:20b`.
-4. Run the Pinggy command in Colab to create a public tunnel for Ollama:
-   ```bash
-   ssh -p 443 -R0:localhost:11434 qr@a.pinggy.io
-   ```
-5. **Copy the public URL** provided by Pinggy.
-6. On your local machine, setup your environment (as shown in Option 1) but update `configs/default.yaml` (or set the environment variable) to point `OLLAMA_BASE_URL` to your Pinggy URL.
-7. Run the app locally:
-   ```bash
-   python run.py
-   ```
+- `app/utils/intent_classifier.py`: Contains the local inference logic for the Llama-3 model.
+- `configs/inference.yaml`: Manages model parameters locally within Ex3.
+- `models/`: Destination folder for your fine-tuned model weights.
 
 ---
 

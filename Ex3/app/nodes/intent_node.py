@@ -3,13 +3,11 @@ import sys
 from ..core.schemas import IntentResult
 from ..core.settings import settings
 
-# Attempt to import the Lab 2 inference class
 try:
-    # The project root was added to sys.path in run.py
-    from Ex2.scripts.inference import IntentClassification
-    HAS_LAB2_MODEL = True
+    from .intent_classifier_wrapper import LocalIntentClassifier
+    HAS_INTENT_MODEL_CODE = True
 except ImportError:
-    HAS_LAB2_MODEL = False
+    HAS_INTENT_MODEL_CODE = False
 
 class IntentNode:
     """
@@ -20,7 +18,7 @@ class IntentNode:
     
     def __init__(self):
         self.classifier = None
-        self.use_fallback = not HAS_LAB2_MODEL
+        self.use_fallback = not HAS_INTENT_MODEL_CODE
         
         # Define keyword patterns for fallback logic
         self.intent_patterns = {
@@ -33,20 +31,32 @@ class IntentNode:
             "transaction_history": ["transaction", "history", "statement", "recent"]
         }
         
-        # Initialize Lab 2 classifier if available
-        if HAS_LAB2_MODEL:
+        # Initialize Local classifier if available
+        if HAS_INTENT_MODEL_CODE:
+            # We look for the config file path defined in settings
             config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", settings.INTENT_CONFIG_PATH))
+            
             if os.path.exists(config_path):
                 try:
                     # Note: This requires a GPU and the models folder to exist
-                    self.classifier = IntentClassification(config_path)
-                    print(f"✅ Lab 2 Intent Model loaded from {config_path}")
+                    self.classifier = LocalIntentClassifier(config_path)
+                    print(f"✅ Local Intent Model loaded from {config_path}")
                 except Exception as e:
-                    print(f"⚠️ Failed to initialize Lab 2 model: {e}. Falling back to rules.")
+                    print(f"⚠️ Failed to initialize local model: {e}. Falling back to rules.")
                     self.use_fallback = True
             else:
-                print(f"⚠️ Lab 2 config not found at {config_path}. Falling back to rules.")
-                self.use_fallback = True
+                # If the project is standalone, try looking for the config in the core folder
+                local_config = os.path.join(os.path.dirname(__file__), "../core/inference.yaml")
+                if os.path.exists(local_config):
+                    try:
+                        self.classifier = LocalIntentClassifier(local_config)
+                        print(f"✅ Local Intent Model loaded from {local_config}")
+                    except Exception as e:
+                        print(f"⚠️ Failed to initialize local model: {e}")
+                        self.use_fallback = True
+                else:
+                    print(f"⚠️ Intent config not found at {config_path}. Falling back to rules.")
+                    self.use_fallback = True
 
     def process(self, message: str) -> IntentResult:
         """
@@ -57,7 +67,7 @@ class IntentNode:
         # 1. Try using the fine-tuned model first
         if not self.use_fallback and self.classifier:
             try:
-                intent = self.classifier(message)
+                intent = self.classifier.predict(message)
                 # Map model output to our known intents if necessary
                 # The Lab 2 model typically returns the intent name directly
                 return IntentResult(intent=intent, confidence=0.90)

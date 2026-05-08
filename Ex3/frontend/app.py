@@ -94,7 +94,8 @@ def main():
 
                 # Display Response
                 st.markdown("### 🤖 Assistant's Response")
-                st.markdown(f'<div class="response-card">{data["response"]}</div>', unsafe_allow_html=True)
+                with st.chat_message("assistant"):
+                    st.markdown(data["response"])
                 
                 # TTS
                 speak_text(data["response"])

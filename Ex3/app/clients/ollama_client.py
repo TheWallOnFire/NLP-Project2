@@ -16,9 +16,15 @@ class OllamaClient(BaseLLMClient):
             "stream": False,
             **kwargs
         }
-        response = requests.post(url, json=payload, timeout=120)
-        response.raise_for_status()
-        return response.json()["response"]
+        try:
+            # Increased timeout to 300s (5 minutes) for large models
+            response = requests.post(url, json=payload, timeout=300)
+            response.raise_for_status()
+            return response.json()["response"]
+        except requests.exceptions.ReadTimeout:
+            raise RuntimeError(f"Ollama server timed out after 300s while generating a response with model {self.model}. The model may be too large for the current hardware.")
+        except Exception as e:
+            raise e
 
     def chat(self, messages: List[Dict[str, str]], **kwargs) -> str:
         url = f"{self.base_url}/api/chat"
@@ -28,6 +34,12 @@ class OllamaClient(BaseLLMClient):
             "stream": False,
             **kwargs
         }
-        response = requests.post(url, json=payload, timeout=120)
-        response.raise_for_status()
-        return response.json()["message"]["content"]
+        try:
+            # Increased timeout to 300s (5 minutes) for large models
+            response = requests.post(url, json=payload, timeout=300)
+            response.raise_for_status()
+            return response.json()["message"]["content"]
+        except requests.exceptions.ReadTimeout:
+            raise RuntimeError(f"Ollama server timed out after 300s while chatting with model {self.model}.")
+        except Exception as e:
+            raise e

@@ -1,99 +1,73 @@
 # 🏦 Banking AI-Agentic Workflow
 
-This project implements an agentic workflow for banking customer support. It uses a series of specialized nodes to process customer queries, assess risk, retrieve policies, and generate professional responses.
-
-The project includes both a **FastAPI backend** and a **Streamlit web frontend** with voice capabilities.
-
----
+An intelligent, node-based agentic workflow for banking customer support. This system leverages fine-tuned Large Language Models (LLMs) to understand customer intent, assess risk, and generate policy-grounded responses automatically.
 
 ## 🤖 Workflow Architecture
 
-The system follows a modular "Chain of Thought" or "Node-based" design:
+The system is built using a modular **"Chain of Thought"** architecture, where each node has a specialized responsibility:
 
-1.  **Intent Detection**: Identifies the user's goal using the fine-tuned **Llama-3 8B** model from **Lab 2**.
-2.  **Priority Assessment**: Analyzes the urgency and risk level (Low/Medium/High).
-3.  **Policy Retrieval**: Fetches relevant information from the internal knowledge base (`policies.py`).
-4.  **Response Drafting**: Generates a tailored response using **Ollama** (`gpt-oss-20b`), including missing info and next steps.
-5.  **Validation**: Verifies the drafted response for quality, completeness, and confidence.
-6.  **Routing**: Decides whether to send the response directly, ask for more info, or escalate to a human agent.
+1.  **Intent Detection**: Identifies the customer's goal (e.g., balance inquiry, card lost) using a **fine-tuned Llama-3 8B model**.
+2.  **Priority Assessment**: Evaluates the urgency and risk level (Low, Medium, High).
+3.  **Policy Retrieval**: Fetches relevant banking guidelines from a curated policy database.
+4.  **Response Drafting**: Generates a professional, empathetic response using **Ollama** (`gpt-oss-20b`).
+5.  **Validation**: Performa quality checks on the draft (completeness, accuracy, and confidence).
+6.  **Routing/Escalation**: Determines if the response can be sent directly or if the case requires a human specialist.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Run
 
-There are three ways to run this project depending on your hardware capabilities.
-
-### 💻 Option 1: Fully Local (Requires strong hardware)
-Run both the FastAPI application and the Ollama model on your local machine.
+### 💻 Option 1: Local Execution (Windows/Linux/Mac)
+Perfect for development and high-performance hardware.
 
 **1. Prerequisites**
 - Python 3.10+
-- **Ollama** installed and running locally.
-- Pull the model: `ollama pull gpt-oss:20b`.
-- **Model Weights**: Copy your `models/intent_model/` from Project 2 into the `Ex3/models/` directory.
+- **Ollama** installed ([ollama.com](https://ollama.com/))
+- Download the model: `ollama pull gpt-oss:20b`
 
-**2. Setup & Run**
+**2. Setup**
 ```bash
+# Clone the repository
+git clone https://github.com/TheWallOnFire/NLP-Project2.git
+cd NLP-Project2/Ex3
+
 # Create and activate virtual environment
 python -m venv venv
 .\venv\Scripts\activate  # Windows
+source venv/bin/activate  # Linux/Mac
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Run the Application
-python run.py
 ```
 
-### ☁️ Option 2: Google Colab (Recommended)
-Run the entire system directly on Google Colab using our automated notebook.
-
-1. Open **`Run_App_Colab.ipynb`** in Google Colab.
-2. Change the Runtime to **T4 GPU**.
-3. Run all cells. 
-4. **Cloudflare Tunnel**: The notebook now uses `cloudflared` for superior stability. It will provide you with a clean `.trycloudflare.com` URL for the Web Frontend.
+**3. Run**
+- **Automatic**: Run `.\start_all.ps1` (PowerShell) to launch everything.
+- **Manual**:
+    - Terminal 1: `python run.py` (FastAPI Backend)
+    - Terminal 2: `streamlit run frontend/app.py` (Web UI)
 
 ---
 
-## 🏗️ Standalone Architecture
-The project has been updated to be fully standalone. The **Intent Detection** logic from Project 2 has been migrated into `app/utils/intent_classifier.py`.
+### ☁️ Option 2: Google Colab (Recommended for GPU)
+Run the entire system—including the heavy LLM—for free on Google Colab.
 
-- `app/utils/intent_classifier.py`: Contains the local inference logic for the Llama-3 model.
-- `configs/inference.yaml`: Manages model parameters locally within Ex3.
-- `models/`: Destination folder for your fine-tuned model weights.
-
----
-
-## 🧪 Testing
-You can test the endpoint using `curl` or the provided `examples/sample_requests.json`:
-
-```bash
-curl -X POST "http://localhost:8000/process" \
-     -H "Content-Type: application/json" \
-     -d '{"query": "I lost my credit card, help!"}'
-```
+1.  Upload the **`Run_App_Colab.ipynb`** file to your Google Colab.
+2.  Change the Runtime type to **T4 GPU** (Runtime > Change runtime type).
+3.  Run the cells sequentially.
+4.  **Access the App**: The notebook uses **Cloudflare Tunnels** to provide stable public URLs for both the API and the Streamlit Web Interface. No local setup is required!
 
 ---
 
-## 🎓 Project Details
-- **Course**: NLP in Industry
-- **Project**: 3 - Build a Banking AI-Agent
+## 📁 Project Structure
+The project follows a professional modular structure as per requirements:
+- `app/main.py`: FastAPI entry point.
+- `app/nodes/`: Specialized logic for each agent node.
+- `app/core/`: Settings, schemas, and model configurations.
+- `app/data/`: Internal policy database.
+- `frontend/`: Premium Streamlit web interface with voice support.
+- `examples/`: Sample JSON requests for testing.
+
+## 🎓 Course Information
+- **Course**: NLP in Industry (Project 3)
 - **Instructor**: Dr. Nguyen Hong Buu Long
-
----
-
-## 🏗️ Project Structure & Documentation
-
-The project has been refactored to follow professional Python standards.
-
-- `app/`: Main application code (FastAPI, agent nodes, etc.)
-- `configs/`: Configuration YAML files.
-- `docs/`: Comprehensive documentation. See [setup.md](docs/setup.md), [api.md](docs/api.md), and [architecture.md](docs/architecture.md) for more details.
-- `tests/`: Unit and integration tests.
-
-### Running Tests
-
-To run the test suite, use pytest:
-```bash
-pytest
-```
+- **Institution**: University of Science - VNUHCM

@@ -7,23 +7,25 @@ class DraftNode:
 
     def process(self, query: str, intent: str, priority: Priority, policy: str) -> DraftResult:
         prompt = f"""
-You are a helpful and professional banking assistant.
-Customer Query: "{query}"
+You are an expert Banking Customer Support Assistant.
+Customer Inquiry: "{query}"
 Detected Intent: {intent}
 Priority Level: {priority}
-Relevant Policy: "{policy}"
+Relevant Bank Policy: "{policy}"
 
-Instructions:
-1. Draft a concise and friendly response to the customer.
-2. If the priority is HIGH, emphasize that we are handling this with urgency.
-3. Use the information in the Relevant Policy to answer the query accurately.
-4. If you don't have enough information, list the missing details.
-5. Suggest the next logical action for the customer or the bank.
+Task: Draft a professional and empathetic response to the customer.
+Guidelines:
+1. Address the customer's specific concern directly.
+2. Incorporate the "Relevant Bank Policy" naturally into your answer.
+3. If the priority is HIGH, lead with a reassuring statement about immediate action.
+4. Keep the tone professional yet approachable.
+5. If you need more information to process the request (e.g., date, transaction ID), explicitly list it.
+6. Suggest the very next step the customer should take.
 
-Format your response as follows:
-RESPONSE: [Your draft response]
-MISSING_INFO: [Detail 1, Detail 2, or None]
-NEXT_ACTION: [Suggested action]
+Format your output exactly as:
+RESPONSE: [Your detailed draft]
+MISSING_INFO: [What we still need, or 'None']
+NEXT_ACTION: [What the user should do next]
 """
         
         try:

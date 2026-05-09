@@ -15,32 +15,35 @@ The system is built using a modular **"Chain of Thought"** architecture, where e
 
 ---
 
-## 🚀 How to Run (Automated Pipeline)
+## 🚀 How to Run
 
-We have fully automated the pipeline! Both the local and Colab execution methods will **automatically run the Ex2 training process first**, generate the fine-tuned intent model, and then seamlessly launch the Ex3 Banking AI-Agent.
+Because this project relies heavily on the **fine-tuned LLaMA-3 intent model** from Ex2, you must obtain those trained model weights before the Ex3 Agent can function. We have designed interactive prompts in both local and Colab environments to make this easy!
 
 ### ☁️ Option 1: Google Colab (Highly Recommended)
 Run the entire system—including the heavy LLaMA-3 training and Ollama LLM—for free on Google Colab using a T4 GPU.
 
-1.  Upload the **`Run_App_Colab.ipynb`** file to your Google Colab.
-2.  Change the Runtime type to **T4 GPU** (`Runtime > Change runtime type`).
-3.  Run the cells sequentially. The notebook will automatically:
-    - Clone the repository.
-    - Navigate to `Ex2` and train the intent model.
-    - Copy the model to `Ex3`.
-    - Boot up the API and Web UI using Cloudflare tunnels.
-4.  **Access the App**: Click the provided Cloudflare URLs to access the web interface. No local setup is required!
+**Step 1: Train the Model (Ex2)**
+1. Open `Ex2/Banking_Intent_Detection_Colab.ipynb` in Google Colab (T4 GPU).
+2. Run the cells. When prompted, type `clone` to pull the repository.
+3. The final cell will train the intent model, automatically zip it (`intent_model.zip`), and download it to your physical computer.
+
+**Step 2: Run the Banking Agent (Ex3)**
+1. Open `Ex3/Run_App_Colab.ipynb` in Google Colab (T4 GPU).
+2. When prompted for Git action, type `clone`.
+3. When prompted: `Do you want to run Ex2 training inside this notebook? (y/n)`, type **`n`**.
+4. The notebook will prompt you to **Upload** a file. Select the `intent_model.zip` you downloaded in Step 1.
+5. The notebook will extract your model, boot up Ollama, and generate public Cloudflare URLs for your Streamlit Web UI!
 
 ---
 
 ### 💻 Option 2: Local Execution (Windows/Linux/Mac)
-Perfect for development, but **requires an NVIDIA GPU** for the Ex2 training phase.
+Perfect for development, but **requires an NVIDIA GPU** if you choose to run the training phase locally.
 
 **1. Prerequisites**
 - Python 3.10+
 - **Ollama** installed ([ollama.com](https://ollama.com/))
 - Download the Ollama model: `ollama pull gpt-oss:20b`
-- **NVIDIA GPU** with CUDA installed (Required for `unsloth` during the Ex2 phase).
+- **NVIDIA GPU** with CUDA installed (Only required if you are training the Ex2 model locally).
 
 **2. Setup**
 ```bash
@@ -62,7 +65,9 @@ pip install -r requirements.txt
 # Windows PowerShell
 powershell -ExecutionPolicy Bypass -File .\start_all.ps1
 ```
-> **What this does:** It will navigate to `../Ex2`, preprocess the dataset, train the LLaMA-3 model via QLoRA, navigate back to `Ex3`, and start the FastAPI Backend and Streamlit Frontend automatically!
+> **What this does:** The script will pause and ask: `Do you want to run the Ex2 training pipeline first? (y/n)`. 
+> - If you type **`y`**: It will natively train the model via QLoRA (requires GPU), then boot up Ex3.
+> - If you type **`n`**: It will skip training (assuming you already have the model in `Ex2/models/intent_model/`) and instantly start the FastAPI Backend and Streamlit Frontend!
 
 ---
 

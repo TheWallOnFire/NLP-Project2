@@ -15,15 +15,32 @@ The system is built using a modular **"Chain of Thought"** architecture, where e
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Run (Automated Pipeline)
 
-### 💻 Option 1: Local Execution (Windows/Linux/Mac)
-Perfect for development and high-performance hardware.
+We have fully automated the pipeline! Both the local and Colab execution methods will **automatically run the Ex2 training process first**, generate the fine-tuned intent model, and then seamlessly launch the Ex3 Banking AI-Agent.
+
+### ☁️ Option 1: Google Colab (Highly Recommended)
+Run the entire system—including the heavy LLaMA-3 training and Ollama LLM—for free on Google Colab using a T4 GPU.
+
+1.  Upload the **`Run_App_Colab.ipynb`** file to your Google Colab.
+2.  Change the Runtime type to **T4 GPU** (`Runtime > Change runtime type`).
+3.  Run the cells sequentially. The notebook will automatically:
+    - Clone the repository.
+    - Navigate to `Ex2` and train the intent model.
+    - Copy the model to `Ex3`.
+    - Boot up the API and Web UI using Cloudflare tunnels.
+4.  **Access the App**: Click the provided Cloudflare URLs to access the web interface. No local setup is required!
+
+---
+
+### 💻 Option 2: Local Execution (Windows/Linux/Mac)
+Perfect for development, but **requires an NVIDIA GPU** for the Ex2 training phase.
 
 **1. Prerequisites**
 - Python 3.10+
 - **Ollama** installed ([ollama.com](https://ollama.com/))
-- Download the model: `ollama pull gpt-oss:20b`
+- Download the Ollama model: `ollama pull gpt-oss:20b`
+- **NVIDIA GPU** with CUDA installed (Required for `unsloth` during the Ex2 phase).
 
 **2. Setup**
 ```bash
@@ -40,21 +57,12 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-**3. Run**
-- **Automatic**: Run `.\start_all.ps1` (PowerShell) to launch everything.
-- **Manual**:
-    - Terminal 1: `python run.py` (FastAPI Backend)
-    - Terminal 2: `streamlit run frontend/app.py` (Web UI)
-
----
-
-### ☁️ Option 2: Google Colab (Recommended for GPU)
-Run the entire system—including the heavy LLM—for free on Google Colab.
-
-1.  Upload the **`Run_App_Colab.ipynb`** file to your Google Colab.
-2.  Change the Runtime type to **T4 GPU** (Runtime > Change runtime type).
-3.  Run the cells sequentially.
-4.  **Access the App**: The notebook uses **Cloudflare Tunnels** to provide stable public URLs for both the API and the Streamlit Web Interface. No local setup is required!
+**3. Run the Automated Script**
+```powershell
+# Windows PowerShell
+.\start_all.ps1
+```
+> **What this does:** It will navigate to `../Ex2`, preprocess the dataset, train the LLaMA-3 model via QLoRA, navigate back to `Ex3`, and start the FastAPI Backend and Streamlit Frontend automatically!
 
 ---
 

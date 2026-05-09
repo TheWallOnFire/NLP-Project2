@@ -1,5 +1,5 @@
 # Inference Configuration for Standalone Banking Intent Detection
 # Relative path to the model weights folder
-model_path: "../models/intent_model"
+model_path: "../../../Ex2/models/intent_model"
 max_seq_length: 2048
 load_in_4bit: true

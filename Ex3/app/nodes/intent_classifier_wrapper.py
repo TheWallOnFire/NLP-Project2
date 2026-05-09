@@ -30,6 +30,17 @@ class LocalIntentClassifier:
              potential_path = os.path.join(os.path.dirname(config_path), model_dir)
              if os.path.exists(potential_path):
                  model_dir = potential_path
+             else:
+                 # Fallback: check Ex2 folder directly if running locally
+                 # Config is at app/core/inference.yaml. ../../../Ex2/models/intent_model gets us to NLP-Project2/Ex2/models/intent_model
+                 ex2_path = os.path.join(os.path.dirname(config_path), "..", "..", "..", "Ex2", "models", "intent_model")
+                 if os.path.exists(ex2_path):
+                     model_dir = os.path.abspath(ex2_path)
+                 else:
+                     # Check if it was extracted directly to Ex3/models/intent_model
+                     ex3_path = os.path.join(os.path.dirname(config_path), "..", "..", "models", "intent_model")
+                     if os.path.exists(ex3_path):
+                         model_dir = os.path.abspath(ex3_path)
 
         print(f"Loading Llama-3 Intent Model from {model_dir}...")
         

@@ -6,7 +6,8 @@ from ..core.settings import settings
 try:
     from .intent_classifier_wrapper import LocalIntentClassifier
     HAS_INTENT_MODEL_CODE = True
-except ImportError:
+except Exception as e:
+    print(f"⚠️ Could not load Intent Classifier (GPU might be missing): {e}")
     HAS_INTENT_MODEL_CODE = False
 
 class IntentNode:

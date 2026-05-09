@@ -60,7 +60,7 @@ pip install -r requirements.txt
 **3. Run the Automated Script**
 ```powershell
 # Windows PowerShell
-.\start_all.ps1
+powershell -ExecutionPolicy Bypass -File .\start_all.ps1
 ```
 > **What this does:** It will navigate to `../Ex2`, preprocess the dataset, train the LLaMA-3 model via QLoRA, navigate back to `Ex3`, and start the FastAPI Backend and Streamlit Frontend automatically!
 

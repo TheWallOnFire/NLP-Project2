@@ -10,15 +10,16 @@ def main():
     # Configuration
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", "8000"))
-    reload = os.getenv("DEBUG", "false").lower() == "true"
+    debug_mode = os.getenv("DEBUG", "false").lower() == "true"
+    log_level = "debug" if debug_mode else "info"
     
     # Run server
-    uvicorn.run(
+    uvicorn.run( 
         "app.main:app",
         host=host,
         port=port,
-        reload=reload,
-        log_level="info"
+        reload=debug_mode,
+        log_level=log_level
     )
 
 if __name__ == "__main__":

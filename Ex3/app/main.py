@@ -4,10 +4,12 @@ from .agent.orchestrator import AgentOrchestrator
 from .core.settings import settings
 
 import logging
+import os
 
-# Configure logging
+# Configure logging based on DEBUG env var
+debug_mode = os.getenv("DEBUG", "false").lower() == "true"
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG if debug_mode else logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger("banking-api")

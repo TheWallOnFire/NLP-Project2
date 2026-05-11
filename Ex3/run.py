@@ -19,6 +19,8 @@ def main():
         host=host,
         port=port,
         reload=debug_mode,
+        reload_dirs=["app"],  # Only watch the 'app' directory for changes
+        reload_excludes=["unsloth_compiled_cache/*", "venv/*", "*.pyc"],
         log_level=log_level
     )
 

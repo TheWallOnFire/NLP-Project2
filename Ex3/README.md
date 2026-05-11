@@ -9,7 +9,7 @@ The system is built using a modular **"Chain of Thought"** architecture, where e
 1.  **Intent Detection**: Identifies the customer's goal (e.g., balance inquiry, card lost) using a **fine-tuned Llama-3 8B model**.
 2.  **Priority Assessment**: Evaluates the urgency and risk level (Low, Medium, High).
 3.  **Policy Retrieval**: Fetches relevant banking guidelines from a curated policy database.
-4.  **Response Drafting**: Generates a professional, empathetic response using **Ollama** (`gpt-oss-20b`).
+4.  **Response Drafting**: Generates a professional, empathetic response using **Ollama** (`llama3:8b` or `gpt-oss-20b`).
 5.  **Validation**: Performa quality checks on the draft (completeness, accuracy, and confidence).
 6.  **Routing/Escalation**: Determines if the response can be sent directly or if the case requires a human specialist.
 

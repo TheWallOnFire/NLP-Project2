@@ -68,7 +68,8 @@ class LocalIntentClassifier:
             **inputs, 
             max_new_tokens = 64,
             use_cache = True,
-            pad_token_id = self.tokenizer.eos_token_id
+            pad_token_id = self.tokenizer.eos_token_id,
+            max_length = None # Explicitly unset to avoid conflict with max_new_tokens
         )
         
         # Decode results

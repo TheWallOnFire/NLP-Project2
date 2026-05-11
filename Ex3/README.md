@@ -32,7 +32,8 @@ Run the entire system—including the heavy LLaMA-3 training and Ollama LLM—fo
 2. When prompted for Git action, type `clone`.
 3. When prompted: `Do you want to run Ex2 training inside this notebook? (y/n)`, type **`n`**.
 4. The notebook will prompt you to **Upload** a file. Select the `intent_model.zip` you downloaded in Step 1.
-5. The notebook will extract your model, boot up Ollama, and generate public Cloudflare URLs for your Streamlit Web UI!
+5. The notebook will extract your model and boot up Ollama.
+6. **Important**: In Step 5, look for the `FRONTEND UI` link (ending in `.trycloudflare.com`). **Do not use the standard "External URL"** shown by Streamlit, as it will timeout. Use the Cloudflare link to access your app!
 
 ---
 

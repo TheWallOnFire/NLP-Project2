@@ -10,7 +10,7 @@ def main():
     # Configuration
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", "8000"))
-    debug_mode = os.getenv("DEBUG", "false").lower() == "true"
+    debug_mode = os.getenv("DEBUG", "true").lower() == "true"
     log_level = "debug" if debug_mode else "info"
     
     # Run server

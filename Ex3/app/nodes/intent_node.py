@@ -32,32 +32,45 @@ class IntentNode:
             "transaction_history": ["transaction", "history", "statement", "recent"]
         }
         
-        # Initialize Local classifier if available
-        if HAS_INTENT_MODEL_CODE:
-            # We look for the config file path defined in settings
-            config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", settings.INTENT_CONFIG_PATH))
-            
-            if os.path.exists(config_path):
-                try:
-                    # Note: This requires a GPU and the models folder to exist
-                    self.classifier = LocalIntentClassifier(config_path)
-                    print(f"✅ Local Intent Model loaded from {config_path}")
-                except Exception as e:
-                    print(f"⚠️ Failed to initialize local model: {e}. Falling back to rules.")
-                    self.use_fallback = True
-            else:
-                # If the project is standalone, try looking for the config in the core folder
-                local_config = os.path.join(os.path.dirname(__file__), "../core/inference.yaml")
-                if os.path.exists(local_config):
-                    try:
-                        self.classifier = LocalIntentClassifier(local_config)
-                        print(f"✅ Local Intent Model loaded from {local_config}")
-                    except Exception as e:
-                        print(f"⚠️ Failed to initialize local model: {e}")
-                        self.use_fallback = True
-                else:
-                    print(f"⚠️ Intent config not found at {config_path}. Falling back to rules.")
-                    self.use_fallback = True
+        # 1. Check if model code is even available (unsloth installed)
+        if not HAS_INTENT_MODEL_CODE:
+            print("ℹ️ Unsloth not installed. Using Keyword Fallback for Intent Detection.")
+            return
+
+        # 2. Search for the model weights folder in common locations
+        # We look for the folder in Ex3/models/intent_model or sibling Ex2
+        possible_paths = [
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../models/intent_model")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../Ex2/models/intent_model")),
+            os.path.abspath(os.path.join(os.getcwd(), "models/intent_model")),
+            os.path.abspath(os.path.join(os.getcwd(), "../Ex2/models/intent_model"))
+        ]
+        
+        found_path = None
+        for p in possible_paths:
+            if os.path.exists(os.path.join(p, "config.json")):
+                found_path = p
+                break
+        
+        # 3. Attempt to load the model if weights were found
+        if found_path:
+            try:
+                # Use the core inference config if it exists, otherwise use the found directory
+                config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../core/inference.yaml"))
+                if not os.path.exists(config_path):
+                    config_path = found_path
+                
+                self.classifier = LocalIntentClassifier(config_path)
+                print(f"✅ AI Intent Model loaded successfully from: {found_path}")
+                self.use_fallback = False
+            except Exception as e:
+                print(f"⚠️ Found model weights but failed to initialize LLM: {e}")
+                print("ℹ️ Falling back to Keyword Rules.")
+                self.use_fallback = True
+        else:
+            print("⚠️ Intent model weights not found in Ex3/models/intent_model.")
+            print("ℹ️ Using Keyword Fallback. (To use the AI model, please extract your weights to Ex3/models/intent_model)")
+            self.use_fallback = True
 
     def process(self, message: str) -> IntentResult:
         """

@@ -1,11 +1,14 @@
+# Core API and Frontend
 fastapi
 uvicorn
 pydantic
-requests
 pydantic-settings
+requests
 python-dotenv
 streamlit
-# Additional libraries for Ex2 model integration
-torch
 PyYAML
-unsloth
+
+# Optional: AI Model Integration (Requires GPU)
+# To use the fine-tuned Llama-3 model, uncomment these:
+# torch
+# unsloth

@@ -6,82 +6,71 @@ An intelligent, node-based agentic workflow for banking customer support. This s
 
 The system is built using a modular **"Chain of Thought"** architecture, where each node has a specialized responsibility:
 
-1.  **Intent Detection**: Identifies the customer's goal (e.g., balance inquiry, card lost) using a **fine-tuned Llama-3 8B model**.
+1.  **Intent Detection**: Identifies the customer's goal using a **fine-tuned Llama-3 8B model** with an automatic **Keyword Fallback** for robustness.
 2.  **Priority Assessment**: Evaluates the urgency and risk level (Low, Medium, High).
 3.  **Policy Retrieval**: Fetches relevant banking guidelines from a curated policy database.
 4.  **Response Drafting**: Generates a professional, empathetic response using **Ollama** (`llama3:8b` or `gpt-oss-20b`).
-5.  **Validation**: Performa quality checks on the draft (completeness, accuracy, and confidence).
+5.  **Validation**: Performs quality checks on the draft (completeness, accuracy, and confidence).
 6.  **Routing/Escalation**: Determines if the response can be sent directly or if the case requires a human specialist.
+
+---
+
+## ✨ Key Features & Stability
+
+- **Smart Model Detection**: The system automatically searches for model weights in `Ex3/models/`, `../Ex2/models/`, or the current working directory.
+- **Robust Fallback**: If LLM weights are missing or a GPU is unavailable, the agent gracefully falls back to a rule-based keyword matcher, ensuring the service remains active.
+- **Development Stability**: Optimized for `uvicorn` reloader—the server won't crash or loop due to model cache updates.
+- **Colab Optimized**: Includes a robust tunneling setup for stable public access to both the API and the Web UI.
 
 ---
 
 ## 🚀 How to Run
 
-Because this project relies heavily on the **fine-tuned LLaMA-3 intent model** from Ex2, you must obtain those trained model weights before the Ex3 Agent can function. We have designed interactive prompts in both local and Colab environments to make this easy!
-
 ### ☁️ Option 1: Google Colab (Highly Recommended)
 Run the entire system—including the heavy LLaMA-3 training and Ollama LLM—for free on Google Colab using a T4 GPU.
 
-**Step 1: Train the Model (Ex2)**
-1. Open `Ex2/Banking_Intent_Detection_Colab.ipynb` in Google Colab (T4 GPU).
-2. Run the cells. When prompted, type `clone` to pull the repository.
-3. The final cell will train the intent model, automatically zip it (`intent_model.zip`), and download it to your physical computer.
+1.  Open `Ex3/Run_App_Colab.ipynb` in Google Colab (T4 GPU).
+2.  Follow the interactive prompts to either train the model natively or upload a pre-trained `intent_model.zip`.
+3.  **Access the UI**: In Step 5, look for the `FRONTEND UI` link (ending in `.trycloudflare.com`). **Do not use the standard "External URL"** provided by Streamlit as it will timeout.
 
-**Step 2: Run the Banking Agent (Ex3)**
-1. Open `Ex3/Run_App_Colab.ipynb` in Google Colab (T4 GPU).
-2. When prompted for Git action, type `clone`.
-3. When prompted: `Do you want to run Ex2 training inside this notebook? (y/n)`, type **`n`**.
-4. The notebook will prompt you to **Upload** a file. Select the `intent_model.zip` you downloaded in Step 1.
-5. The notebook will extract your model and boot up Ollama.
-6. **Important**: In Step 5, look for the `FRONTEND UI` link (ending in `.trycloudflare.com`). **Do not use the standard "External URL"** shown by Streamlit, as it will timeout. Use the Cloudflare link to access your app!
+### 💻 Option 2: Local Execution
+1.  **Prerequisites**: Python 3.10+, **Ollama** installed (`ollama pull llama3:8b`).
+2.  **Setup**:
+    ```bash
+    # Create virtual environment
+    python -m venv venv
 
----
+    # Activate (Windows)
+    .\venv\Scripts\activate
 
-### 💻 Option 2: Local Execution (Windows/Linux/Mac)
-Perfect for development, but **requires an NVIDIA GPU** if you choose to run the training phase locally.
+    # Activate (Linux/Mac)
+    source venv/bin/activate
 
-**1. Prerequisites**
-- Python 3.10+
-- **Ollama** installed ([ollama.com](https://ollama.com/))
-- Download the Ollama model: `ollama pull gpt-oss:20b`
-- **NVIDIA GPU** with CUDA installed (Only required if you are training the Ex2 model locally).
+    # Install core dependencies
+    pip install -r requirements.txt
 
-**2. Setup**
-```bash
-# Clone the repository
-git clone https://github.com/TheWallOnFire/NLP-Project2.git
-cd NLP-Project2/Ex3
-
-# Create and activate virtual environment
-python -m venv venv
-.\venv\Scripts\activate  # Windows
-source venv/bin/activate  # Linux/Mac
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-**3. Run the Automated Script**
-```powershell
-# Windows PowerShell
-powershell -ExecutionPolicy Bypass -File .\start_all.ps1
-```
-> **What this does:** The script will pause and ask: `Do you want to run the Ex2 training pipeline first? (y/n)`. 
-> - If you type **`y`**: It will natively train the model via QLoRA (requires GPU), then boot up Ex3.
-> - If you type **`n`**: It will skip training (assuming you already have the model in `Ex2/models/intent_model/`) and instantly start the FastAPI Backend and Streamlit Frontend!
+    # (Optional) For AI Model support, install torch and unsloth
+    pip install torch unsloth
+    ```
+3.  **Run**:
+    ```bash
+    python run.py
+    ```
+    *The agent will automatically check for the intent model in `models/intent_model/`. If not found, it will log an info message and use Keyword Fallback.*
 
 ---
 
 ## 📁 Project Structure
-The project follows a professional modular structure as per requirements:
-- `app/main.py`: FastAPI entry point.
-- `app/nodes/`: Specialized logic for each agent node.
-- `app/core/`: Settings, schemas, and model configurations.
-- `app/data/`: Internal policy database.
-- `frontend/`: Premium Streamlit web interface with voice support.
-- `examples/`: Sample JSON requests for testing.
+- `app/main.py`: FastAPI entry point and pipeline orchestration.
+- `app/nodes/`: Specialized logic for each agent node (Intent, Priority, Policy, etc.).
+- `app/core/`: Settings, schemas, and local LLM wrappers.
+- `app/data/`: Internal policy database and bank guidelines.
+- `frontend/`: Premium Streamlit web interface with deep reasoning trace.
+- `models/`: (Ignored by Git) Directory for fine-tuned LLM weights.
 
 ## 🎓 Course Information
 - **Course**: NLP in Industry (Project 3)
 - **Instructor**: Dr. Nguyen Hong Buu Long
 - **Institution**: University of Science - VNUHCM
+- **Student**: Huynh Manh Tuong - 23120105
+

@@ -7,17 +7,27 @@ class LocalIntentClassifier:
     """
     Local inference class for Banking Intent Detection, migrated from Project 2.
     """
-    def __init__(self, config_path):
+    def __init__(self, config_or_path):
         """
         Initialize the inference class by loading the configuration and model.
         Args:
-            config_path (str): Path to the inference YAML configuration file.
+            config_or_path (str): Path to the inference YAML configuration file or the model directory.
         """
-        if not os.path.exists(config_path):
-            raise FileNotFoundError(f"Config file not found: {config_path}")
+        if not os.path.exists(config_or_path):
+            raise FileNotFoundError(f"Path not found: {config_or_path}")
 
-        with open(config_path, "r") as f:
-            self.config = yaml.safe_load(f)
+        # Default configuration
+        self.config = {
+            "model_path": config_or_path,
+            "max_seq_length": 2048,
+            "load_in_4bit": True
+        }
+
+        # If it's a YAML file, load it to override defaults
+        if config_or_path.endswith((".yaml", ".yml")):
+            with open(config_or_path, "r") as f:
+                loaded_config = yaml.safe_load(f)
+                self.config.update(loaded_config)
 
         if not torch.cuda.is_available():
             raise RuntimeError("CUDA is not available. Unsloth requires an NVIDIA GPU.")

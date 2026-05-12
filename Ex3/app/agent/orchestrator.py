@@ -48,7 +48,7 @@ class AgentOrchestrator:
             trace.draft.missing_information,
             trace.intent.confidence
         )
-        print(f"DEBUG: [ValidationNode] Passed: {trace.validation.is_valid} (Reason: {trace.validation.reason})")
+        print(f"DEBUG: [ValidationNode] Passed: {trace.validation.is_valid} (Reason: {trace.validation.feedback})")
         
         # 6. Routing Decision
         trace.router = self.router_node.process(

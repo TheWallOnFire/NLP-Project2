@@ -73,4 +73,4 @@ Run the entire system—including the heavy LLaMA-3 training and Ollama LLM—fo
 - **Instructor**: Dr. Nguyen Hong Buu Long
 - **Institution**: University of Science - VNUHCM
 - **Student**: Huynh Manh Tuong - 23120105
-
+- **URL**: https://drive.google.com/file/d/1pbjYF9cHXyMEx2Qr8AI7Eo3qgnNVq2Co/view?usp=sharing
